@@ -5,7 +5,7 @@ const Product = require('../models/Product')
 /* GET home page. */
 router.get('/', async function (req, res, next) {
   const products = await Product.find()
-  console.log(products); // massiv
+  // console.log(products); // massiv
 
   res.render('index', {
     title: 'Express',

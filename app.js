@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const adminRouter = require('./routes/admin');
 
 const app = express();
 
@@ -14,9 +14,9 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-app.set(exhbs({
+app.engine('hbs', exhbs({
   layoutsDir: path.join(__dirname, 'views/layouts'),
-  defaultLayout: 'main',
+  defaultLayout: 'layout',
   extname: 'hbs',
   partialsDir: [
     path.join(__dirname, 'views/partials')
@@ -35,8 +35,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/admin', express.static(path.join(__dirname, 'public')))
+app.use('/admin:any', express.static(path.join(__dirname, 'public')))
+
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/admin', adminRouter);
 
 
 
