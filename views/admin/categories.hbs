@@ -1,0 +1,11 @@
+{{#if categories.length}}
+{{#each categories}}
+<h1>{{categoryName}}</h1>
+<img src="/images/{{categoryIcon}}" alt="{{categoryIcon}}">
+<span>{{sortNumber}}</span>
+<button class="btn btn-danger">O'chirish</button>
+<button class="btn btn-warning">O'zgartirish</button>
+{{/each}}
+{{else}}
+<h1>Kategoriyalar yo'q</h1>
+{{/if}}

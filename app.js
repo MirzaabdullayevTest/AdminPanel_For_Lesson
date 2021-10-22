@@ -7,6 +7,7 @@ const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
 const adminRouter = require('./routes/admin');
+const categoryRouter = require('./routes/category');
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use('/admin:any', express.static(path.join(__dirname, 'public')))
 
 app.use('/', indexRouter);
 app.use('/admin', adminRouter);
+app.use('/admin/category', categoryRouter);
 
 
 
