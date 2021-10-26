@@ -1,10 +1,17 @@
 {{#if categories.length}}
 {{#each categories}}
-<h1>{{categoryName}}</h1>
-<img src="/images/{{categoryIcon}}" alt="{{categoryIcon}}">
-<span>{{sortNumber}}</span>
-<button class="btn btn-danger">O'chirish</button>
-<button class="btn btn-warning">O'zgartirish</button>
+<div class="col-lg-3">
+    <div class="card">
+        <img src="/images/{{categoryIcon}}" alt="{{categoryIcon}}">
+        <div class="card-body">
+            <h2 class="card-title">{{categoryName}}</h2>
+            <div class="d-flex">
+                <a href="/admin/category/delete/{{id}}" class="btn btn-danger">O'chirish</a>
+                <a href="/admin/category/edit/{{id}}" class="btn btn-warning">O'zgartirish</a>
+            </div>
+        </div>
+    </div>
+</div>
 {{/each}}
 {{else}}
 <h1>Kategoriyalar yo'q</h1>
