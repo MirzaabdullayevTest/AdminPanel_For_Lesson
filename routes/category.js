@@ -3,6 +3,7 @@ const router = Router()
 const fileUpload = require('../middleware/fileUpload')
 const Category = require('../models/Category')
 const toDelete = require('../middleware/toDelete')
+const mongoose = require('mongoose')
 
 router.get('/read', async (req, res) => {
     const categories = await Category.find()
@@ -12,6 +13,59 @@ router.get('/read', async (req, res) => {
         header: 'Kategoriyalarni ko`rish',
         categories,
         layout: 'main',
+    })
+})
+
+router.get('/read/:id', async (req, res) => {
+    const { categoryName } = await Category.findById(req.params.id)
+    let products = await Category.aggregate([
+        {
+            $match: {
+                _id: mongoose.Types.ObjectId(req.params.id)
+            }
+        },
+        {
+            $lookup: {
+                from: 'products',
+                localField: "_id",
+                foreignField: "categoryId",
+                as: 'mahsulotlar'
+            }
+        },
+        {
+            $unwind: {
+                path: '$mahsulotlar'
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    _id: '$_id'
+                },
+                mahsulotlar: {
+                    $push: '$mahsulotlar'
+                }
+            }
+        },
+        {
+            $project: {
+                _id: '$id._id',
+                name: '$_id.name',
+                price: '$_id.price',
+                img: '$_id.img',
+                mahsulotlar: '$mahsulotlar'
+            }
+        }
+    ])
+
+    // res.send(products[0].mahsulotlar)
+    products = products[0].mahsulotlar
+
+    res.render('admin/category', {
+        header: categoryName,
+        products,
+        title: categoryName,
+        layout: 'main'
     })
 })
 
