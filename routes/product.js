@@ -3,8 +3,9 @@ const router = Router()
 const Category = require('../models/Category')
 const fileUpload = require('../middleware/fileUpload')
 const Product = require('../models/Product')
+const auth = require('../middleware/auth')
 
-router.get('/view', async (req, res) => {
+router.get('/view', auth, async (req, res) => {
     const products = await Product.find()
 
     res.render('admin/products', {
@@ -15,7 +16,7 @@ router.get('/view', async (req, res) => {
     })
 })
 
-router.get('/add', async (req, res) => {
+router.get('/add', auth, async (req, res) => {
     const categories = await Category.find()
     res.render('admin/productCreate', {
         header: 'Mahsulot yaratish',
@@ -24,7 +25,7 @@ router.get('/add', async (req, res) => {
     })
 })
 
-router.post('/add', fileUpload.single('img'), async (req, res) => {
+router.post('/add', auth, fileUpload.single('img'), async (req, res) => {
     const { name, price, categoryId } = req.body
     console.log(req.file);
     const img = req.file.filename
